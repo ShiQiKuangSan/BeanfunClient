@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\ico.png" />
+    <None Remove="Images\login_about_0.png" />
+    <None Remove="Images\login_about_1.png" />
+    <None Remove="Images\login_close_0.png" />
+    <None Remove="Images\login_close_1.png" />
+    <None Remove="Images\logo.png" />
+    <None Remove="Images\pwd.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.49" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.5.23280.8" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1905-prerelease" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PuppeteerExtraSharp" Version="2.0.0" />
+    <PackageReference Include="PuppeteerSharp" Version="10.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Beanfun.Api\Beanfun.Api.csproj" />
+    <ProjectReference Include="..\Beanfun.Common\Beanfun.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\ico.png" />
+    <Resource Include="Images\login_about_0.png" />
+    <Resource Include="Images\login_about_1.png" />
+    <Resource Include="Images\login_close_0.png" />
+    <Resource Include="Images\login_close_1.png" />
+    <Resource Include="Images\logo.png" />
+    <Resource Include="Images\pwd.png" />
+  </ItemGroup>
+
+</Project>

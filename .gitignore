@@ -1,0 +1,12 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/DesTest
+/.vs
+/Beanfun.Api/obj
+/Beanfun.Api/bin/Debug/net7.0
+/Beanfun.Common/obj
+/Beanfun.Common/bin/Debug/net7.0
+/XsBeanfun/obj
+/XsBeanfun/bin/Debug/net7.0-windows
