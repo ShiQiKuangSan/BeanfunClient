@@ -5,8 +5,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Beanfun.Pages"
-        mc:Ignorable="d"
+        xmlns:viewmodels="clr-namespace:Beanfun.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+         mc:Ignorable="d"
         ResizeMode="CanMinimize"
         Icon="/Images/ico.png"
         Background="#F4F4F4"
@@ -58,7 +59,7 @@
                 <MenuItem Header="工具说明" />
             </MenuItem>
         </Menu>
-        <Grid Grid.Row="1" Margin="10" VerticalAlignment="Center">
+        <Grid Grid.Row="1" Margin="10" VerticalAlignment="Center" Visibility="{Binding IsShowAccount}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.35*" />
                 <ColumnDefinition Width="*" />
@@ -75,8 +76,11 @@
             </Grid.RowDefinitions>
             <!--第一行-->
             <Label Grid.Row="0" Grid.Column="0" Content="游戏账号" />
-            <ComboBox Grid.Row="0" Grid.Column="1" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" IsReadOnly="True">
-            </ComboBox>
+            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="xAccounts" Height="25" Width="120"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding AccountList}" SelectedValue="{Binding CuAccount}" DisplayMemberPath="{Binding CuAccount.Name}" SelectedValuePath="{Binding CuAccount.Id}" />
             <Button Margin="5" Grid.Row="0" Grid.Column="2" Content="退出登录" />
             <!--第二行-->
             <Label Grid.Row="1" Grid.Column="0" Content="乐豆" />
@@ -84,25 +88,25 @@
             <Button Margin="5" Grid.Row="1" Grid.Column="2" Content="汇率查询" />
             <!--第三行-->
             <Label Grid.Row="2" Grid.Column="0" Content="账号状态" />
-            <Label Grid.Row="2" Grid.Column="1" Content="正常" Foreground="Green" />
+            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CuAccount.Status}" Foreground="{Binding CuAccountStatusColor}" />
             <Button Margin="5" Grid.Row="2" Grid.Column="2" Content="录像" />
             <!--第四行-->
             <Label Grid.Row="3" Grid.Column="0" Content="创建时间" />
-            <Label Grid.Row="3" Grid.Column="1" Content="2020-02-10 19:37:11" />
-            <Button Margin="5" Grid.Row="3" Grid.Column="2" Content="获取动态密码" />
+            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CuAccount.CreateTime}" />
+            <Button Margin="5" Grid.Row="3" Grid.Column="2" Content="获取动态密码" Command="{Binding GetDynamicPasswordCommand}" />
             <!--第五行-->
             <Label Grid.Row="4" Grid.Column="0" Content="登录账号" />
-            <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="" Width="140" Height="25" IsReadOnly="True" />
+            <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.Id}" Width="140" Height="25" IsReadOnly="True" />
             <!--第六行-->
             <Label Grid.Row="5" Grid.Column="0" Content="登录密码" />
-            <TextBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="" Width="140" Height="25" IsReadOnly="True" />
+            <TextBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.PassWord}" Width="140" Height="25" IsReadOnly="True" />
 
-            <Button Margin="5" Grid.Row="4" Grid.Column="2" Grid.RowSpan="2" Content="启动游戏" />
+            <Button Margin="5" Grid.Row="4" Grid.Column="2" Grid.RowSpan="2" Content="启动游戏" Command="{Binding GameStartCommand}" />
 
             <Label Grid.Row="6" Grid.Column="0" Content="游戏路径" />
-            <TextBox Margin="0,0,10,0" Grid.Row="6" Grid.Column="1" Text="" VerticalContentAlignment="Center" Height="20" IsReadOnly="True" />
-            <Button Margin="5" Grid.Row="6" Grid.Column="2" Content="浏览路径" />
+            <TextBox Margin="0,0,10,0" Grid.Row="6" Grid.Column="1" Text="{Binding Config.GamePath}" VerticalContentAlignment="Center" Height="20" IsReadOnly="True" />
+            <Button Margin="5" Grid.Row="6" Grid.Column="2" Content="浏览路径" Command="{Binding GetGamePathCommand}" />
         </Grid>
-        <Label Grid.Row="1" Content="获取账号中.." FontSize="30" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Label Grid.Row="1" Content="{Binding LodingName}" Visibility="{Binding IsLoding}" FontSize="30" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
 </beanfun:BaseWindow>

@@ -5,6 +5,10 @@ using Beanfun.Common.Models;
 
 using Masuit.Tools.Security;
 
+using System.Text;
+using System.Web;
+using System.Xml.Linq;
+
 namespace Beanfun.Api
 {
     public static class BeanfunApi
@@ -120,6 +124,34 @@ namespace Beanfun.Api
             var deVal = split[1][8..];
 
             return DesTools.Decrypt(deVal, key);
+        }
+
+
+        protected static string GetAccountName(string name)
+        {
+            var list = name.Split(";");
+
+            StringBuilder builder = new StringBuilder();
+
+            foreach (var item in list)
+            {
+                var val = item.Replace("&#", "");
+
+
+                var status = int.TryParse(val, out var num);
+
+                if (!status)
+                    continue;
+
+                builder.Append($"%u{string.Format("{0:X2}", num)}");
+            }
+
+            if (builder.Length > 0)
+            {
+                return HttpUtility.UrlDecode(builder.ToString(), Encoding.UTF8);
+            }
+
+            return string.Empty;
         }
     }
 }

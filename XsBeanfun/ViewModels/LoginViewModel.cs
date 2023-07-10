@@ -1,6 +1,7 @@
 ﻿using Beanfun.Common;
 using Beanfun.Common.Models;
-using Beanfun.Models.Config;
+using Beanfun.Common.Models.Config;
+using Beanfun.Common.Services;
 using Beanfun.Models.Login;
 using Beanfun.Services;
 
@@ -95,7 +96,8 @@ namespace Beanfun.ViewModels
 
         public LoginViewModel()
         {
-            _configService = App.Current.Services.GetService<IConfigService>();
+            _configService = BeanfunConst.Instance.ConfigService;
+            _configService?.InitConfig();
 
             _config = _configService?.GetConfig() ?? new Config();
 
@@ -115,9 +117,11 @@ namespace Beanfun.ViewModels
         {
             ShowAppInit();
 
+            BeanfunConst.Instance.InitPlugin();
+
             await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
 
-            _beanfunPage = BeanfunConst.Page;
+            _beanfunPage = BeanfunConst.Instance.Page;
 
             ShowInputAct();
         }

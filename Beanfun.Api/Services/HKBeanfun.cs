@@ -17,7 +17,7 @@ namespace Beanfun.Api.Services
 
         public HKBeanfun()
         {
-            _beanfunPage = BeanfunConst.Page;
+            _beanfunPage = BeanfunConst.Instance.Page;
         }
 
         /// <summary>
@@ -69,6 +69,15 @@ namespace Beanfun.Api.Services
 
             var accountList = document.DocumentNode.SelectSingleNode("//*[@id='ulServiceAccountList']/li");
 
+            if (!accountList.ChildNodes.Any())
+            {
+                //没有账号的情况下，判断是否没有进阶认证
+                if (accountAmountLimitNotice.OuterHtml.Contains("進階認證"))
+                {
+                    result.Data.CertStatus = false;
+                }
+            }
+
             foreach (var node in accountList.ChildNodes)
             {
                 if (node.Name == "div")
@@ -81,7 +90,7 @@ namespace Beanfun.Api.Services
                     var status = node.GetAttributeValue("onclick", string.Empty);
 
                     account.Id = id;
-                    account.Name = Regex.Unescape(name);
+                    account.Name = GetAccountName(name);
                     account.Sn = sn;
                     account.Status = !string.IsNullOrEmpty(status);
                     account.CreateTime = await GetAccountCreateTime(sn);

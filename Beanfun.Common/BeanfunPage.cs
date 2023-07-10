@@ -182,7 +182,7 @@ namespace Beanfun.Common
         public async void Dispose()
         {
             foreach (var item in _pages)
-                item.Value.Dispose();
+                await item.Value.CloseAsync();
 
             if (Browser != null)
                 await Browser.CloseAsync();

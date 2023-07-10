@@ -1,8 +1,8 @@
 ﻿using Beanfun;
 using Beanfun.Common;
+using Beanfun.Common.Services;
 using Beanfun.Models.Login;
 using Beanfun.Pages;
-using Beanfun.Services;
 using Beanfun.ViewModels;
 
 using CommunityToolkit.Mvvm.Messaging;
@@ -31,8 +31,8 @@ namespace XsBeanfun
 
             this.DataContext = viewModel = new LoginViewModel();
 
-            _configService = App.Current.Services.GetService<IConfigService>();
-            _messageService = App.Current.Services.GetService<IMessageService>();
+            _configService = BeanfunConst.Instance.ConfigService;
+            _messageService = BeanfunConst.Instance.MessageService;
 
             WeakReferenceMessenger.Default.Register<UiChangeEvent>(this, UiChange);
 
@@ -108,7 +108,7 @@ namespace XsBeanfun
             BeanfunConst.Instance.Token = result.Token;
 
             //跳转到登陆成功页
-            MainWindow mainWindow = new();
+            MainWindow mainWindow = new(this);
 
             mainWindow.Show();
 
@@ -117,6 +117,7 @@ namespace XsBeanfun
 
         private void Image_WindowClose(object sender, MouseButtonEventArgs e)
         {
+            BeanfunConst.Instance.Page.Dispose();
             this.Close();
         }
 
