@@ -11,7 +11,7 @@
         ResizeMode="CanMinimize"
         Icon="/Images/ico.png"
         Background="#F4F4F4"
-        Title="心守-Beanfun-v1.0.0" Height="330" Width="420">
+        Title="心守-Beanfun-v1.0.0" Height="300" Width="420">
     <Window.Resources>
         <Style x:Key="baseStyle" TargetType="Control">
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -31,29 +31,26 @@
         <Menu Grid.Row="0" Height="25" Margin="0,0,0,0" VerticalAlignment="Bottom">
             <MenuItem Header="主菜单" Margin="10,5,6,0">
                 <MenuItem Header="窗口置顶" IsCheckable="True" InputGestureText="可勾选" />
-                <MenuItem Header="强制结束NGS进程" />
-                <MenuItem Header="装备卷轴计算器" />
-                <MenuItem Header="纸娃娃系统" />
-                <MenuItem Header="联盟摆放模拟器" />
-                <MenuItem Header="系统计算器" />
+                <MenuItem Header="强制结束NGS进程" Click="KillBlackXchg_Click" />
+                <MenuItem Header="纸娃娃系统" Click="StartMapEmul_Click" />
+                <MenuItem Header="联盟摆放模拟器" Click="WarAlliance_Click" />
             </MenuItem>
             <MenuItem Header="用户中心" Margin="0,5,6,0">
-                <MenuItem Header="编辑当前账号" />
-                <MenuItem Header="会员中心" />
-                <MenuItem Header="充值中心" />
-                <MenuItem Header="客服中心" />
+                <MenuItem Header="会员中心" Click="UserInfo_Click" />
+                <MenuItem Header="充值中心" Click="UserInfo_Click" />
+                <MenuItem Header="客服中心" Click="UserInfo_Click" />
             </MenuItem>
             <MenuItem Header="软件设置" Margin="0,5,6,0">
-                <MenuItem Header="阻止游戏自动更新" IsCheckable="True" InputGestureText="可勾选" />
-                <MenuItem Header="自动跳过PLAY窗口" IsCheckable="True" InputGestureText="可勾选" />
-                <MenuItem Header="输入法钩子(Win7)" IsCheckable="True" InputGestureText="可勾选" />
+                <MenuItem Header="阻止游戏自动更新" IsCheckable="True" InputGestureText="可勾选" Click="SetConfig_Click" />
+                <MenuItem Header="自动跳过PLAY窗口" IsCheckable="True" InputGestureText="可勾选" Click="SetConfig_Click" />
+                <MenuItem Header="输入法钩子(Win7)" IsCheckable="True" InputGestureText="可勾选" Click="SetConfig_Click" />
             </MenuItem>
             <MenuItem Header="快速导航" Margin="0,5,6,0">
-                <MenuItem Header="新枫之谷台服官网" />
-                <MenuItem Header="新香港橘子官网" />
-                <MenuItem Header="透视镜" />
-                <MenuItem Header="巴哈姆特" />
-                <MenuItem Header="新枫之谷贴吧" />
+                <MenuItem Header="新枫之谷台服官网" Click="OpenUrl_Click" />
+                <MenuItem Header="新香港橘子官网" Click="OpenUrl_Click" />
+                <MenuItem Header="透视镜" Click="OpenUrl_Click" />
+                <MenuItem Header="巴哈姆特" Click="OpenUrl_Click" />
+                <MenuItem Header="新枫之谷贴吧" Click="OpenUrl_Click" />
             </MenuItem>
             <MenuItem Header="关于..." Margin="0,5,0,0">
                 <MenuItem Header="工具说明" />
@@ -72,7 +69,6 @@
                 <RowDefinition Height="35" />
                 <RowDefinition Height="35" />
                 <RowDefinition Height="35" />
-                <RowDefinition Height="35" />
             </Grid.RowDefinitions>
             <!--第一行-->
             <Label Grid.Row="0" Grid.Column="0" Content="游戏账号" />
@@ -80,32 +76,27 @@
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
                       IsReadOnly="True"
-                      ItemsSource="{Binding AccountList}" SelectedValue="{Binding CuAccount}" DisplayMemberPath="{Binding CuAccount.Name}" SelectedValuePath="{Binding CuAccount.Id}" />
-            <Button Margin="5" Grid.Row="0" Grid.Column="2" Content="退出登录" />
-            <!--第二行-->
-            <Label Grid.Row="1" Grid.Column="0" Content="乐豆" />
-            <Label Grid.Row="1" Grid.Column="1" Content="0点[游戏内:0]" />
-            <Button Margin="5" Grid.Row="1" Grid.Column="2" Content="汇率查询" />
+                      ItemsSource="{Binding AccountList}" SelectedItem="{Binding CuAccount}" DisplayMemberPath="Name" SelectedValuePath="Id" />
+            <Button Margin="5" Grid.Row="0" Grid.Column="2" Content="退出登录" Click="LoginOut_Click" />
             <!--第三行-->
-            <Label Grid.Row="2" Grid.Column="0" Content="账号状态" />
-            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CuAccount.Status}" Foreground="{Binding CuAccountStatusColor}" />
-            <Button Margin="5" Grid.Row="2" Grid.Column="2" Content="录像" />
+            <Label Grid.Row="1" Grid.Column="0" Content="账号状态" />
+            <Label Grid.Row="1" Grid.Column="1" Content="{Binding CuAccount.StatusStr}" Foreground="{Binding CuAccountStatusColor}" />
             <!--第四行-->
-            <Label Grid.Row="3" Grid.Column="0" Content="创建时间" />
-            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CuAccount.CreateTime}" />
-            <Button Margin="5" Grid.Row="3" Grid.Column="2" Content="获取动态密码" Command="{Binding GetDynamicPasswordCommand}" />
+            <Label Grid.Row="2" Grid.Column="0" Content="创建时间" />
+            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CuAccount.CreateTime}" />
+            <Button Margin="5" Grid.Row="2" Grid.Column="2" Content="获取动态密码" Command="{Binding GetDynamicPasswordCommand}" />
             <!--第五行-->
-            <Label Grid.Row="4" Grid.Column="0" Content="登录账号" />
-            <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.Id}" Width="140" Height="25" IsReadOnly="True" />
+            <Label Grid.Row="3" Grid.Column="0" Content="登录账号" />
+            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.Id}" Width="140" Height="25" IsReadOnly="True" />
             <!--第六行-->
-            <Label Grid.Row="5" Grid.Column="0" Content="登录密码" />
-            <TextBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.PassWord}" Width="140" Height="25" IsReadOnly="True" />
+            <Label Grid.Row="4" Grid.Column="0" Content="登录密码" />
+            <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.PassWord}" Width="140" Height="25" IsReadOnly="True" />
 
-            <Button Margin="5" Grid.Row="4" Grid.Column="2" Grid.RowSpan="2" Content="启动游戏" Command="{Binding GameStartCommand}" />
+            <Button Margin="5" Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" Content="启动游戏" Command="{Binding GameStartCommand}" />
 
-            <Label Grid.Row="6" Grid.Column="0" Content="游戏路径" />
-            <TextBox Margin="0,0,10,0" Grid.Row="6" Grid.Column="1" Text="{Binding Config.GamePath}" VerticalContentAlignment="Center" Height="20" IsReadOnly="True" />
-            <Button Margin="5" Grid.Row="6" Grid.Column="2" Content="浏览路径" Command="{Binding GetGamePathCommand}" />
+            <Label Grid.Row="5" Grid.Column="0" Content="游戏路径" />
+            <TextBox Margin="0,0,10,0" Grid.Row="5" Grid.Column="1" Text="{Binding Config.GamePath}" VerticalContentAlignment="Center" Height="20" IsReadOnly="True" />
+            <Button Margin="5" Grid.Row="5" Grid.Column="2" Content="浏览路径" Command="{Binding GetGamePathCommand}" />
         </Grid>
         <Label Grid.Row="1" Content="{Binding LodingName}" Visibility="{Binding IsLoding}" FontSize="30" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>

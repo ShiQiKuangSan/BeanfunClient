@@ -28,15 +28,5 @@ namespace Beanfun.Api.Services
         {
             throw new NotImplementedException();
         }
-
-        public override string GetWebUrlMemberCenter(string token)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string GetWebUrlMemberTopUp(string token)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

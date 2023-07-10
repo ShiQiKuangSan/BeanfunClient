@@ -88,20 +88,6 @@ namespace Beanfun.Api
         public abstract Task<BeanfunResult> ChangeAccountName(string accountId, string newName);
 
         /// <summary>
-        /// 获取web url会员充值
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public abstract string GetWebUrlMemberTopUp(string token);
-
-        /// <summary>
-        /// 获取web url成员中心
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public abstract string GetWebUrlMemberCenter(string token);
-
-        /// <summary>
         /// 解密des pkcs5 hex密文
         /// </summary>
         /// <param name="text"></param>
@@ -113,7 +99,7 @@ namespace Beanfun.Api
                 return "";
             }
 
-            var split = text.Split(",");
+            var split = text.Split(";");
 
             if (!split.Any() || split.Length < 2)
             {

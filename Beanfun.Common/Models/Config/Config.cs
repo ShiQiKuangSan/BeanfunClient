@@ -35,11 +35,6 @@
         public bool HookInput { get; set; }
 
         /// <summary>
-        /// 最小化到系统托盘
-        /// </summary>
-        public bool MinimizeMode { get; set; }
-
-        /// <summary>
         /// 是否自动输入账号密码
         /// </summary>
         public bool AutoInput { get; set; }

@@ -340,26 +340,6 @@ namespace Beanfun.Api.Services
             return result.Success();
         }
 
-        /// <summary>
-        /// 获取web url成员中心
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public override string GetWebUrlMemberCenter(string token)
-        {
-            return "https://bfweb.hk.beanfun.com/HK/auth.aspx?channel=member&page_and_query=default.aspx%3Fservice_code%3D999999%26service_region%3DT0&web_token=" + token;
-        }
-
-        /// <summary>
-        /// 获取web url会员充值
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public override string GetWebUrlMemberTopUp(string token)
-        {
-            return "https://bfweb.hk.beanfun.com/HK/auth.aspx?channel=gash&page_and_query=default.aspx%3Fservice_code%3D999999%26service_region%3DT0&web_token=" + token;
-        }
-
         private async Task<string> GetAccountCreateTime(string sn)
         {
             string url = "https://bfweb.hk.beanfun.com/beanfun_block/game_zone/game_start_step2.aspx";

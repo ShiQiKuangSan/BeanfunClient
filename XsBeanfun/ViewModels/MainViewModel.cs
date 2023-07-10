@@ -11,8 +11,10 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -136,18 +138,24 @@ namespace Beanfun.ViewModels
             if (AccountList.Any())
             {
                 CuAccount = AccountList[0];
-
-                if (CuAccount.StatusStr == "正常")
-                {
-                    CuAccountStatusColor = Brushes.Green;
-                }
-                else
-                {
-                    CuAccountStatusColor = Brushes.Red;
-                }
+                SetStatusColor();
             }
 
             ShowAccount();
+        }
+
+
+        public void SetStatusColor()
+        {
+
+            if (CuAccount?.StatusStr == "正常")
+            {
+                CuAccountStatusColor = Brushes.Green;
+            }
+            else
+            {
+                CuAccountStatusColor = Brushes.Red;
+            }
         }
 
         /// <summary>
@@ -159,7 +167,6 @@ namespace Beanfun.ViewModels
             OpenFileDialog dialog = new();
 
             dialog.DefaultExt = ".exe";
-            dialog.Filter = "*.exe";
 
             var result = dialog.ShowDialog();
             if (result == true)
@@ -286,6 +293,23 @@ namespace Beanfun.ViewModels
             //设置密码到文本框
             CuAccount.PassWord = result.Data;
             ShowAccount();
+        }
+
+        public void LoginOut()
+        {
+            BeanfunConst.Instance.Page.Dispose();
+
+            BeanfunConst.Instance.Page.LaunchAsync();
+        }
+
+
+        public void OpenInBrowser(string url)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                url = url.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+            }
         }
     }
 }

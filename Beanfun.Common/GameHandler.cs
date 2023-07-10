@@ -30,7 +30,8 @@ namespace Beanfun.Common
             string lrExe = BeanfunConst.Instance.LocaleRemulatorDir + "\\LRProc.exe";
             string lrDll = BeanfunConst.Instance.LocaleRemulatorDir + "\\LRHookx64.dll";
 
-            string cmd = $"\"{lrExe}\" \"{lrDll}\" tms {runParam}";
+            //LRProc.exe LRHookx64.dll tms F:\MapleStory\MapleStory.exe
+            //string cmd = $"LRProc.exe LRHookx64.dll tms {runParam}";
 
             try
             {
@@ -38,17 +39,17 @@ namespace Beanfun.Common
 
                 process.StartInfo = new ProcessStartInfo()
                 {
-                    FileName = "cmd.exe",
-                    RedirectStandardOutput = false,
+                    UseShellExecute = false,
+                    RedirectStandardInput = true,
                     RedirectStandardError = true,
-                    CreateNoWindow = true,
+                    FileName = lrExe,
+                    Arguments = $"{lrDll} tms {runParam}",
+                    CreateNoWindow = false
                 };
 
-                await process.StandardInput.WriteAsync(cmd);
+                process.Start();
 
-                process.WaitForExit();
-
-                process.Close();
+                await process.WaitForExitAsync();
             }
             catch (Exception e)
             {

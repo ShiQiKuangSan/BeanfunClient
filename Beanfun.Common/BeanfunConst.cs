@@ -121,6 +121,36 @@ namespace Beanfun.Common
             t.Start();
         }
 
+        /// <summary>
+        /// 启动纸娃娃
+        /// </summary>
+        public void StartMapEmul()
+        {
+            if (string.IsNullOrEmpty(MapleStoryEmulator))
+                return;
+
+
+            if (!File.Exists(MapleStoryEmulator))
+                return;
+
+            WindowManager.OpenApp(MapleStoryEmulator);
+        }
+
+        /// <summary>
+        /// 联盟摆放模拟器
+        /// </summary>
+        public void StartWarAlliance()
+        {
+            if (string.IsNullOrEmpty(WarAllianceHtml))
+                return;
+
+
+            if (!File.Exists(WarAllianceHtml))
+                return;
+
+            WindowManager.OpenApp(WarAllianceHtml);
+        }
+
         private static void Unzip(byte[] data, string path)
         {
             try

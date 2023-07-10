@@ -32,5 +32,25 @@
         /// 服务中心
         /// </summary>
         public static string ServiceCenter => "https://csp.hk.beanfun.com/";
+
+        /// <summary>
+        /// 获取web url会员充值
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static string GetWebUrlMemberTopUp()
+        {
+            return "https://bfweb.hk.beanfun.com/HK/auth.aspx?channel=gash&page_and_query=default.aspx%3Fservice_code%3D999999%26service_region%3DT0&web_token=" + BeanfunConst.Instance.Token;
+        }
+
+        /// <summary>
+        /// 获取web url成员中心
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static string GetWebUrlMemberCenter()
+        {
+            return "https://bfweb.hk.beanfun.com/HK/auth.aspx?channel=member&page_and_query=default.aspx%3Fservice_code%3D999999%26service_region%3DT0&web_token=" + BeanfunConst.Instance.Token;
+        }
     }
 }

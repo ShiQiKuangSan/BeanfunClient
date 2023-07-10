@@ -39,6 +39,7 @@ namespace XsBeanfun
         {
             var msg = new MessageService();
             BeanfunConst.Instance.InitApp(new ConfigService(msg), msg);
+            WindowManager.CloseChrome();
         }
     }
 }

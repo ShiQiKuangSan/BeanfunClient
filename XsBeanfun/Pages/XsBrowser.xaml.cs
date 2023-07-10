@@ -11,11 +11,18 @@ namespace Beanfun.Pages
     /// </summary>
     public partial class XsBrowser : Window
     {
+        private readonly XsBrowserViewModel _viewModel;
+
         public XsBrowser()
         {
             InitializeComponent();
 
-            this.DataContext = new XsBrowserViewModel();
+            this.DataContext = _viewModel = new XsBrowserViewModel();
+        }
+
+        public void SetUrl(string url)
+        {
+            _viewModel.Url = url;
         }
     }
 }
