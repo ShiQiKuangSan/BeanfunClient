@@ -43,7 +43,6 @@
             <MenuItem Header="软件设置" Margin="0,5,6,0">
                 <MenuItem Header="阻止游戏自动更新" IsCheckable="True" InputGestureText="可勾选" Click="SetConfig_Click" />
                 <MenuItem Header="自动跳过PLAY窗口" IsCheckable="True" InputGestureText="可勾选" Click="SetConfig_Click" />
-                <MenuItem Header="输入法钩子(Win7)" IsCheckable="True" InputGestureText="可勾选" Click="SetConfig_Click" />
             </MenuItem>
             <MenuItem Header="快速导航" Margin="0,5,6,0">
                 <MenuItem Header="新枫之谷台服官网" Click="OpenUrl_Click" />
@@ -87,10 +86,10 @@
             <Button Margin="5" Grid.Row="2" Grid.Column="2" Content="获取动态密码" Command="{Binding GetDynamicPasswordCommand}" />
             <!--第五行-->
             <Label Grid.Row="3" Grid.Column="0" Content="登录账号" />
-            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.Id}" Width="140" Height="25" IsReadOnly="True" />
+            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccountStr}" Width="140" Height="25" IsReadOnly="True" />
             <!--第六行-->
             <Label Grid.Row="4" Grid.Column="0" Content="登录密码" />
-            <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuAccount.PassWord}" Width="140" Height="25" IsReadOnly="True" />
+            <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" Text="{Binding CuPassword}" Width="140" Height="25" IsReadOnly="True" />
 
             <Button Margin="5" Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" Content="启动游戏" Command="{Binding GameStartCommand}" />
 

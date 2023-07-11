@@ -71,10 +71,18 @@ namespace Beanfun.ViewModels
         private AccountInfoModel? _cuAccount;
 
         [ObservableProperty]
+        private string? _cuAccountStr;
+
+        [ObservableProperty]
+        private string? _cuPassword;
+
+        [ObservableProperty]
         private Brush? _cuAccountStatusColor;
 
         [ObservableProperty]
         private Config? _config;
+
+        public bool IsBrowserStart { get; set; } = true;
 
         public MainViewModel()
         {
@@ -138,6 +146,9 @@ namespace Beanfun.ViewModels
             if (AccountList.Any())
             {
                 CuAccount = AccountList[0];
+
+                CuAccountStr = CuAccount?.Id;
+                CuPassword = CuAccount?.PassWord;
                 SetStatusColor();
             }
 
@@ -167,6 +178,7 @@ namespace Beanfun.ViewModels
             OpenFileDialog dialog = new();
 
             dialog.DefaultExt = ".exe";
+            dialog.Filter = "Executable Files (.exe)|*.exe";
 
             var result = dialog.ShowDialog();
             if (result == true)
@@ -244,6 +256,7 @@ namespace Beanfun.ViewModels
 
                 //设置密码到文本框
                 CuAccount.PassWord = result.Data;
+                CuPassword = result.Data;
 
                 GameHandler.StartGame(Config.GamePath, CuAccount.Id, CuAccount.PassWord);
             }
@@ -292,6 +305,7 @@ namespace Beanfun.ViewModels
 
             //设置密码到文本框
             CuAccount.PassWord = result.Data;
+            CuPassword = result.Data;
             ShowAccount();
         }
 
@@ -299,7 +313,7 @@ namespace Beanfun.ViewModels
         {
             BeanfunConst.Instance.Page.Dispose();
 
-            BeanfunConst.Instance.Page.LaunchAsync();
+            BeanfunConst.Instance.Page.LaunchAsync(IsBrowserStart);
         }
 
 

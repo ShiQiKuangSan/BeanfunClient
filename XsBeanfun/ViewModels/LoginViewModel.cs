@@ -94,6 +94,8 @@ namespace Beanfun.ViewModels
 
         private BeanfunPage? _beanfunPage;
 
+        public bool IsBrowserStart { get; set; } = false;
+
         public LoginViewModel()
         {
             _configService = BeanfunConst.Instance.ConfigService;

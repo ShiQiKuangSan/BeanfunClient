@@ -59,6 +59,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="心守出品" FontSize="12" HorizontalAlignment="Left" Margin="10,5,5,5" Foreground="White" />
+                <CheckBox Grid.Column="1" Margin="0,0,75,0" FontSize="15" Content="浏览器启动" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" x:Name="BrowserStart" Click="BrowserStart_Click"/>
                 <Image Grid.Column="1" Margin="0,0,43,0" Style="{StaticResource AboutImageMouse}"  HorizontalAlignment="Right" Height="22" />
                 <Image Grid.Column="1" Margin="0,0,12,0" Style="{StaticResource CloseImageMouse}"  HorizontalAlignment="Right" Height="22" MouseDown="Image_WindowClose" />
             </Grid>

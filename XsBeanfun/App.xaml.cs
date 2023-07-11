@@ -3,9 +3,15 @@ using Beanfun.Common.Services;
 using Beanfun.Services;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
+
+using SharpCompress.Common;
 
 using System;
+using System.IO;
 using System.Windows;
+
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace XsBeanfun
 {
@@ -16,9 +22,7 @@ namespace XsBeanfun
     {
         public App()
         {
-            //Services = ConfigureServices();
             InitAppService();
-            //StartupUri = new Uri("Pages/MainWindow.xaml", UriKind.Relative);
         }
 
         public new static App Current => (App)Application.Current;

@@ -10,7 +10,7 @@ namespace Beanfun.Common
         /// <param name="gamePath">游戏路径</param>
         /// <param name="accountId">账号id</param>
         /// <param name="password">密码</param>
-        public static async void StartGame(string gamePath, string? accountId, string? password)
+        public static void StartGame(string gamePath, string? accountId, string? password)
         {
             if (BeanfunConst.Instance.ConfigService == null)
                 return;
@@ -20,36 +20,35 @@ namespace Beanfun.Common
             if (config == null)
                 return;
 
-            string runParam = gamePath;
+            var lrExe = BeanfunConst.Instance.LocaleRemulatorDir;
+
+            if (!File.Exists(lrExe))
+                return;
+
+
+            string commandLine = gamePath;
 
             if (config.AutoInput && !string.IsNullOrEmpty(accountId) && !string.IsNullOrEmpty(password))
             {
-                runParam = $"{runParam} tw.login.maplestory.beanfun.com 8484 BeanFun {accountId} {password}";
+                commandLine = $"{commandLine} tw.login.maplestory.beanfun.com 8484 BeanFun {accountId} {password}";
             }
 
-            string lrExe = BeanfunConst.Instance.LocaleRemulatorDir + "\\LRProc.exe";
-            string lrDll = BeanfunConst.Instance.LocaleRemulatorDir + "\\LRHookx64.dll";
-
-            //LRProc.exe LRHookx64.dll tms F:\MapleStory\MapleStory.exe
-            //string cmd = $"LRProc.exe LRHookx64.dll tms {runParam}";
+            string arg = $"{BeanfunConst.Instance.RlConfigGuid} {commandLine}";
 
             try
             {
-                Process process = new();
-
-                process.StartInfo = new ProcessStartInfo()
+                WindowManager.OpenApp(lrExe, arg);
+                if (config.KillStartPalyWindow)
                 {
-                    UseShellExecute = false,
-                    RedirectStandardInput = true,
-                    RedirectStandardError = true,
-                    FileName = lrExe,
-                    Arguments = $"{lrDll} tms {runParam}",
-                    CreateNoWindow = false
-                };
+                    //跳过启动窗口
+                    WindowManager.CloseMapleStoryStart();
+                }
 
-                process.Start();
-
-                await process.WaitForExitAsync();
+                if (config.KillGamePatcher)
+                {
+                    //阻止游戏更新
+                    WindowManager.StopAutoPatcher();
+                }
             }
             catch (Exception e)
             {

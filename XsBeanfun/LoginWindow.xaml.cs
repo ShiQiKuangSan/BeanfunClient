@@ -18,7 +18,7 @@ namespace XsBeanfun
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class LoginWindow : BaseWindow, IDisposable
+    public partial class LoginWindow : BaseWindow
     {
         private XsBrowser? xsBrowser = null;
         private readonly LoginViewModel viewModel;
@@ -108,7 +108,7 @@ namespace XsBeanfun
             BeanfunConst.Instance.Token = result.Token;
 
             //跳转到登陆成功页
-            MainWindow mainWindow = new(this);
+            MainWindow mainWindow = new(this, viewModel.IsBrowserStart);
 
             mainWindow.Show();
 
@@ -129,11 +129,31 @@ namespace XsBeanfun
             }
         }
 
-        public void Dispose()
-        {
-            WeakReferenceMessenger.Default.Unregister<UiChangeEvent>(this);
 
-            GC.SuppressFinalize(this);
+        private void BrowserStart_Click(object sender, RoutedEventArgs e)
+        {
+            if (BrowserStart.IsChecked == true)
+            {
+                viewModel.IsBrowserStart = false;
+                BeanfunConst.Instance.Page.LaunchAsync(false);
+            }
+            else
+            {
+                viewModel.IsBrowserStart= true;
+                BeanfunConst.Instance.Page.Dispose();
+                BeanfunConst.Instance.Page.LaunchAsync(true);
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            WeakReferenceMessenger.Default.Unregister<UiChangeEvent>(this);
+            WindowManager.CloseChrome();
+            BeanfunConst.Instance.Page.Dispose();
+
+            GC.Collect();
         }
     }
 }

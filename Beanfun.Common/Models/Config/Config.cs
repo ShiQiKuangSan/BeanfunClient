@@ -5,14 +5,14 @@
         /// <summary>
         /// 账号集合
         /// </summary>
-        public List<ConfigAccount> Accounts { get; set; }
+        public List<ConfigAccount> Accounts { get; set; } = new List<ConfigAccount>();
 
         public AccountType StartType { get; set; }
 
         /// <summary>
         /// 游戏路径
         /// </summary>
-        public string GamePath { get; set; }
+        public string? GamePath { get; set; }
 
         /// <summary>
         /// 是否记住密码
@@ -28,11 +28,6 @@
         /// 自动跳过Play窗口
         /// </summary>
         public bool KillStartPalyWindow { get; set; }
-
-        /// <summary>
-        /// 输入法狗子（WIN7）
-        /// </summary>
-        public bool HookInput { get; set; }
 
         /// <summary>
         /// 是否自动输入账号密码

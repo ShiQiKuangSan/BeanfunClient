@@ -174,6 +174,9 @@ namespace Beanfun.Common
 
             var page = await Browser.NewPageAsync();
 
+            if (page.IsClosed)
+                return null;
+
             _pages.Add(pageName, page);
 
             return page;
@@ -186,6 +189,8 @@ namespace Beanfun.Common
 
             if (Browser != null)
                 await Browser.CloseAsync();
+
+            _pages = new Dictionary<string, IPage>();
 
             Browser = null;
 

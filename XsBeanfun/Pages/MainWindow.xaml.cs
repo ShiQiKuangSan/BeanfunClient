@@ -3,7 +3,7 @@ using Beanfun.Common.Services;
 using Beanfun.Models.Main;
 using Beanfun.ViewModels;
 
-using System.Security.Principal;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,11 +18,13 @@ namespace Beanfun.Pages
         private readonly Window _baseWindow;
         private readonly IConfigService? _configService;
 
-        public MainWindow(Window window)
+        public MainWindow(Window window,bool isBrowserStart = false)
         {
             InitializeComponent();
             _baseWindow = window;
             this.DataContext = viewModel = new MainViewModel();
+
+            viewModel.IsBrowserStart = isBrowserStart;
 
             _configService = BeanfunConst.Instance.ConfigService;
 
@@ -30,12 +32,6 @@ namespace Beanfun.Pages
             {
                 await viewModel.Loaded();
                 
-            };
-
-            this.Closed += (sender, e) =>
-            {
-                _baseWindow.Show();
-                this.Close();
             };
 
             xAccounts.SelectionChanged += XAccounts_SelectionChanged;
@@ -46,6 +42,8 @@ namespace Beanfun.Pages
             if (e.AddedItems.Count > 0 && e.AddedItems[0] is AccountInfoModel model)
             {
                 viewModel.CuAccount = model;
+                viewModel.CuAccountStr = model.Id;
+                viewModel.CuPassword = model.PassWord;
                 viewModel.SetStatusColor();
             }
         }
@@ -62,10 +60,6 @@ namespace Beanfun.Pages
                 else if (str == "自动跳过PLAY窗口")
                 {
                     viewModel.Config.KillStartPalyWindow = menu.IsChecked;
-                }
-                else if (str == "输入法钩子(Win7)")
-                {
-                    viewModel.Config.HookInput = menu.IsChecked;
                 }
 
                 _configService?.SaveConfig(viewModel.Config);
@@ -131,8 +125,8 @@ namespace Beanfun.Pages
 
                 if (!string.IsNullOrEmpty(url))
                 {
-                    browser.SetUrl(url);
                     browser.ShowDialog();
+                    browser.SetUrl(url);
                 }
             }
         }
@@ -164,9 +158,14 @@ namespace Beanfun.Pages
 
         private void LoginOut_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.LoginOut();
-
             this.Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            viewModel.LoginOut();
+            _baseWindow.Show();
         }
     }
 }
