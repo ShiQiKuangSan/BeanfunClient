@@ -52,6 +52,11 @@ namespace Beanfun.Common
         public string Token { get; set; } = string.Empty;
 
         /// <summary>
+        /// 游戏快捷方式名称
+        /// </summary>
+        public string? GamePathLnkPath { get; set; }
+
+        /// <summary>
         /// 跨区启动游戏的路径
         /// </summary>
         public string? LocaleRemulatorDir { get; set; }
@@ -88,6 +93,9 @@ namespace Beanfun.Common
             LocaleRemulatorDir = $"{unzippath}\\Locale_Remulator\\LRProc.exe";
             MapleStoryEmulator = $"{unzippath}\\MapleStoryEmulator\\MapleStoryEmulator.exe";
             WarAllianceHtml = $"{unzippath}\\WarAllianceHtml\\index.htm";
+
+            GamePathLnkPath = $"{unzippath}\\BeanfunMapleStory.lnk";
+
             _rlConfigGuidStr = Path.GetDirectoryName(LocaleRemulatorDir) + "\\LRConfig.xml";
 
             var t = new Task(() => { });

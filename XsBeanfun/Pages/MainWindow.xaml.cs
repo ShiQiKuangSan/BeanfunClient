@@ -18,20 +18,21 @@ namespace Beanfun.Pages
         private readonly Window _baseWindow;
         private readonly IConfigService? _configService;
 
-        public MainWindow(Window window,bool isBrowserStart = false)
+        public MainWindow(Window window)
         {
             InitializeComponent();
             _baseWindow = window;
             this.DataContext = viewModel = new MainViewModel();
-
-            viewModel.IsBrowserStart = isBrowserStart;
 
             _configService = BeanfunConst.Instance.ConfigService;
 
             this.Loaded += async (sender, e) =>
             {
                 await viewModel.Loaded();
-                
+
+                KillStartPalyWindow.IsChecked = viewModel.Config?.KillStartPalyWindow ?? false;
+                KillGamePatcher.IsChecked = viewModel.Config?.KillGamePatcher ?? false;
+
             };
 
             xAccounts.SelectionChanged += XAccounts_SelectionChanged;

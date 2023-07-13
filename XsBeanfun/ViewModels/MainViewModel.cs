@@ -77,12 +77,13 @@ namespace Beanfun.ViewModels
         private string? _cuPassword;
 
         [ObservableProperty]
+        private string? _gamePath;
+
+        [ObservableProperty]
         private Brush? _cuAccountStatusColor;
 
         [ObservableProperty]
         private Config? _config;
-
-        public bool IsBrowserStart { get; set; } = true;
 
         public MainViewModel()
         {
@@ -152,6 +153,8 @@ namespace Beanfun.ViewModels
                 SetStatusColor();
             }
 
+            GamePath = Config?.GamePath;
+
             ShowAccount();
         }
 
@@ -188,6 +191,7 @@ namespace Beanfun.ViewModels
                 //保存游戏路径
                 if (Config != null)
                 {
+                    GamePath = path;
                     Config.GamePath = path;
                     _configService?.SaveConfig(Config);
                 }
@@ -313,7 +317,7 @@ namespace Beanfun.ViewModels
         {
             BeanfunConst.Instance.Page.Dispose();
 
-            BeanfunConst.Instance.Page.LaunchAsync(IsBrowserStart);
+            BeanfunConst.Instance.Page.LaunchAsync();
         }
 
 

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using IWshRuntimeLibrary;
 
 namespace Beanfun.Common
 {
@@ -22,9 +22,13 @@ namespace Beanfun.Common
 
             var lrExe = BeanfunConst.Instance.LocaleRemulatorDir;
 
-            if (!File.Exists(lrExe))
+            if (!System.IO.File.Exists(lrExe))
                 return;
 
+            var gamePathLnkPath = BeanfunConst.Instance.GamePathLnkPath;
+
+            if (string.IsNullOrEmpty(gamePathLnkPath))
+                return;
 
             string commandLine = gamePath;
 
@@ -37,7 +41,14 @@ namespace Beanfun.Common
 
             try
             {
-                WindowManager.OpenApp(lrExe, arg);
+
+                if (!System.IO.File.Exists(gamePathLnkPath))
+                {
+                    CreateLnk(gamePath, lrExe, arg);
+                }
+
+                WindowManager.OpenApp(gamePathLnkPath);
+
                 if (config.KillStartPalyWindow)
                 {
                     //跳过启动窗口
@@ -54,6 +65,25 @@ namespace Beanfun.Common
             {
                 BeanfunConst.Instance.MessageService?.Show($"启动游戏异常 {e.Message}");
             }
+        }
+
+
+        private static void CreateLnk(string gamePath,string lRProcPath,string arg)
+        {
+            string shortcutPath = BeanfunConst.Instance.GamePathLnkPath ?? Path.Combine($"{Environment.CurrentDirectory}\\xs-data\\", $"BeanfunMaplestory.lnk");
+
+            WshShell shell = new ();
+            //创建快捷方式对象
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+            //指定目标路径
+            shortcut.TargetPath = lRProcPath;
+            shortcut.Arguments = arg;
+            //设置起始位置
+            shortcut.WorkingDirectory = Path.GetDirectoryName(gamePath);
+            //设置图标路径
+            shortcut.IconLocation = gamePath;
+            //保存快捷方式
+            shortcut.Save();
         }
     }
 }

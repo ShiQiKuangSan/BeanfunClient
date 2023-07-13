@@ -7,8 +7,6 @@ using Beanfun.ViewModels;
 
 using CommunityToolkit.Mvvm.Messaging;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -102,13 +100,14 @@ namespace XsBeanfun
             if (result.Status == false)
             {
                 _messageService?.Show(result.Msg, "提示");
+                viewModel.ShowInputAct();
                 return;
             }
 
             BeanfunConst.Instance.Token = result.Token;
 
             //跳转到登陆成功页
-            MainWindow mainWindow = new(this, viewModel.IsBrowserStart);
+            MainWindow mainWindow = new(this);
 
             mainWindow.Show();
 
@@ -132,6 +131,8 @@ namespace XsBeanfun
 
         private void BrowserStart_Click(object sender, RoutedEventArgs e)
         {
+            BeanfunConst.Instance.Page.Dispose();
+
             if (BrowserStart.IsChecked == true)
             {
                 viewModel.IsBrowserStart = false;
@@ -140,7 +141,6 @@ namespace XsBeanfun
             else
             {
                 viewModel.IsBrowserStart= true;
-                BeanfunConst.Instance.Page.Dispose();
                 BeanfunConst.Instance.Page.LaunchAsync(true);
             }
         }

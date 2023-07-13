@@ -22,19 +22,19 @@ namespace Beanfun.Common
             {
                 Process process = new();
 
-                process.StartInfo = new ProcessStartInfo()
-                {
-                    FileName = "cmd.exe",
-                    RedirectStandardOutput = false,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true,
-                };
+                var info = process.StartInfo;
 
-                await process.StandardInput.WriteAsync(cmd);
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Verb = "runas";
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardInput = true;
 
-                process.WaitForExit();
+                process.Start();
 
-                process.Close();
+                await process.StandardInput.WriteLineAsync(cmd);
+
+                await process.WaitForExitAsync();
+
             }
             catch (Exception)
             {
@@ -50,21 +50,16 @@ namespace Beanfun.Common
 
                 var dir = Path.GetDirectoryName(appPath);
 
-                process.StartInfo = new ProcessStartInfo()
-                {
-                    FileName = appPath,
-                    Arguments = args,
-                    Verb = "runas",
-                    WorkingDirectory = dir,
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                };
+                var info = process.StartInfo;
 
+
+                process.StartInfo.FileName = appPath;
+                process.StartInfo.Arguments = args;
+                process.StartInfo.Verb = "runas";
+                process.StartInfo.WorkingDirectory = dir;
+                process.StartInfo.UseShellExecute = true;
+                
                 process.Start();
-
-                process.WaitForExit();
-
-                process.Close();
             }
             catch (Exception)
             {
@@ -79,7 +74,7 @@ namespace Beanfun.Common
 
             System.Timers.Timer timer = new()
             {
-                Interval = 200,   //1秒运行一次
+                Interval = 1000,   //1秒运行一次
                 AutoReset = true  //一直循环
             };
 
@@ -87,22 +82,22 @@ namespace Beanfun.Common
 
             timer.Elapsed += (sender, arg) =>
             {
-                IntPtr hwnd = 0;
+                IntPtr hwnd = IntPtr.Zero;
 
                 try
                 {
                     hwnd = Win32Api.FindWindow("StartUpDlgClass", "MapleStory");
 
-                    if (hwnd > 0)
+                    if (hwnd != IntPtr.Zero)
                     {
                         Win32Api.SetForegroundWindow(hwnd);
-                        Win32Api.PostMessage(hwnd, 0x10, 0, 0);
+                        Win32Api.SendMessage(hwnd, 16, 0, 0);
+                        timer.Close();
                     }
 
                 }
                 catch (Exception e)
                 {
-                    timer.Stop();
                     timer.Close();
                     BeanfunConst.Instance.MessageService?.Show($"自动关闭Play窗口发生异常! e={e.Message}");
                 }
@@ -110,9 +105,8 @@ namespace Beanfun.Common
                 {
                     i++;
 
-                    if (hwnd != 0 || i > 5)
+                    if (hwnd != IntPtr.Zero || i > 5)
                     {
-                        timer.Stop();
                         timer.Close();
                     }
                 }
@@ -128,8 +122,8 @@ namespace Beanfun.Common
         {
             System.Timers.Timer timer = new()
             {
-                Interval = 200,   //1秒运行一次
-                AutoReset = true  //一直循环
+                Interval = 1000,   //1秒运行一次
+                AutoReset = true,  //一直循环
             };
 
             int i = 1;
@@ -139,9 +133,8 @@ namespace Beanfun.Common
                 try
                 {
 
-                  var patcher= Process.GetProcessesByName("Patcher")
-                    .Where(x=> x.Id > 0)
-                    .FirstOrDefault();
+                    var patcher = Process.GetProcessesByName("Patcher")
+                      .FirstOrDefault(x => x.Id > 0);
 
                     if (patcher == null)
                         return;
@@ -149,11 +142,10 @@ namespace Beanfun.Common
                     var pid = patcher.Id;
 
                     Cmd($"taskkill /F /PID {pid}");
-
+                    timer.Close();
                 }
                 catch (Exception e)
                 {
-                    timer.Stop();
                     timer.Close();
                     BeanfunConst.Instance.MessageService?.Show($"阻止游戏更新发生异常! e={e.Message}");
                 }
@@ -162,7 +154,6 @@ namespace Beanfun.Common
                     i++;
                     if (i > 5)
                     {
-                        timer.Stop();
                         timer.Close();
                     }
                 }
@@ -202,7 +193,7 @@ namespace Beanfun.Common
         /// 该函数将一个消息放入（寄送）到与指定窗口创建的线程相联
         /// 系消息队列里
         /// </summary>    
-        [DllImport("user32.dll", EntryPoint = "PostMessage", CharSet = CharSet.Auto)]
-        public static extern IntPtr PostMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+        [DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
     }
 }

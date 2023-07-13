@@ -10,3 +10,8 @@
 /Beanfun.Common/bin/Debug/net7.0
 /XsBeanfun/obj
 /XsBeanfun/bin/Debug/net7.0-windows
+/XsBeanfun/bin
+/Beanfun.Api/bin/Release/net7.0
+/Beanfun.Common/bin/Release/net7.0
+/XsBeanfun/Beanfun.csproj.user
+/XsBeanfun/Properties/PublishProfiles/FolderProfile.pubxml.user
